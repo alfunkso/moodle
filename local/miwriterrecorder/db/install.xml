@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/miwriterrecorder/db" VERSION="20140406" COMMENT="XMLDB file for Moodle local/miwriterrecorder"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="miwriter" COMMENT="This is the data storage table for MI-Writer. It is installed by the MI-Writer Recorder plugin.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="text"/>
+        <FIELD NAME="text" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The entire text of the edit in question." PREVIOUS="id" NEXT="courseid"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The ID of the course in which this edit was made." PREVIOUS="text" NEXT="moduleid"/>
+        <FIELD NAME="moduleid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="The ID number of the module to which this entry refers. Usually, this is a quiz." PREVIOUS="courseid" NEXT="attemptid"/>
+        <FIELD NAME="attemptid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="The quiz_attempt ID associated with the quiz linked to by the moduleid." PREVIOUS="moduleid" NEXT="forumid"/>
+        <FIELD NAME="forumid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="If the text is coming from a particular forum, this is the ID of the relevant forum." PREVIOUS="attemptid" NEXT="textarea"/>
+        <FIELD NAME="textarea" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The HTML ID of the text area from which the text was gleaned. May contain the question number of the quiz." PREVIOUS="forumid" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="The ID of the user making the edit." PREVIOUS="textarea" NEXT="timestampmicro"/>
+        <FIELD NAME="timestampmicro" TYPE="number" LENGTH="20" NOTNULL="false" SEQUENCE="false" DECIMALS="10" COMMENT="UNIX timestamp in microsecond format. Should be returned from PHP's microtime(true)." PREVIOUS="userid" NEXT="questionid"/>
+        <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="The ID number of the question being edited (if edited item is a quiz)." PREVIOUS="timestampmicro" NEXT="wordcount"/>
+        <FIELD NAME="wordcount" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Number of words in the document at this edit." PREVIOUS="questionid" NEXT="sentencecount"/>
+        <FIELD NAME="sentencecount" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="The number of sentences in the document at this edit." PREVIOUS="wordcount" NEXT="paragraphcount"/>
+        <FIELD NAME="paragraphcount" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Number of paragraphs in the document at this edit." PREVIOUS="sentencecount" NEXT="spellerrors"/>
+        <FIELD NAME="spellerrors" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Total number of spelling errors in the document at this edit." PREVIOUS="paragraphcount" NEXT="spellerrorwords"/>
+        <FIELD NAME="spellerrorwords" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="A comma-separated list of words that are misspelled." PREVIOUS="spellerrors" NEXT="spellerrorpos"/>
+        <FIELD NAME="spellerrorpos" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="A comma-separated list of integers that represents the word locations in the document where the spelling errors are. Word numbers are 0-indexed. These are NOT string character positions. This list corresponds with spellerrorwords." PREVIOUS="spellerrorwords"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
