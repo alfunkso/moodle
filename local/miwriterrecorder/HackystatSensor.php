@@ -41,9 +41,9 @@ class HackystatSensor {
 		$micro = sprintf("%06d",($t - floor($t)) * 1000000);
 		$datetime = new DateTime(date('Y-m-d\TH:i:s.' . $micro,$t));
 		$strDate = $datetime->format("Y-m-d\TH:i:s.u");
-		$request = new HTTP_Request2("http://hackystat.athabascau.ca:9876/sensorbase/sensordata/clayton.clemens@gmail.com/$strDate/",
+		$request = new HTTP_Request2("http://localhost:9876/sensorbase/sensordata/alfunkso@hotmail.com/$strDate/",
 			HTTP_Request2::METHOD_PUT);
-		$request->setAuth('clayton.clemens@gmail.com','3r3KFpTbnFhB');
+		$request->setAuth('alfunkso@hotmail.com','abc123');
 		$request->setHeader('Content-type: text/xml; charset=utf-8');
 		
 		$properties = '<Properties>';
@@ -56,16 +56,21 @@ class HackystatSensor {
 		}
 		$properties .= '</Properties>';
 		
-		$request->setBody('<?xml version="1.0"?>
+		$body = '<?xml version="1.0"?>
 				<SensorData>
 				 <Timestamp>' . $strDate . '</Timestamp>
 				 <Runtime>' . $strDate . '</Runtime>
 				 <Tool>' . $tool . '</Tool>
 				 <SensorDataType>' . $sdt . '</SensorDataType>
-				 <Resource>AAT/' . $resource . '</Resource>
+				 <Resource>' . $resource . '</Resource>
 				 <Owner>' . $owner . '</Owner>'
 				 . $properties . 
-			   '</SensorData>');
+			   '</SensorData>';
+			   
+		echo('BODY: ' . $body);
+		
+		$request->setBody($body);
+		
 		try {
 		    $response = $request->send();
 		    if (200 == $response->getStatus() or 201 == $response->getStatus()) {

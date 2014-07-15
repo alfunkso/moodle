@@ -26,7 +26,7 @@ $arr["user"] = $uid;
 
 $r = writeMIWriterToDB($text, $cid, $uid, $tarea, $qid, $attempt, $fid);
 $hackySensor = new HackystatSensor();
-$hackySensor->putSensorData1("Moodle", "MI-Writer", $res, 'clayton.clemens@gmail.com', $arr);
+$hackySensor->putSensorData1("Moodle", "MI-Writer", $res, 'alfunkso@hotmail.com', $arr);
 
 function writeMIWriterToDB($text, $course, $user, $textarea, $module, $attempt, $forum)
 {
